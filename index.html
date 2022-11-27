@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=620px, initial-scale=1.0">
+    <meta name="viewport" content="width=620px">
+    <!-- , initial-scale=1.0 -->
     <link rel="stylesheet" href="style.css">
     <title>Weather</title>
 </head>
@@ -19,7 +20,7 @@
             <div class="section-main">
                 <div class="section-tabs">
                     <div class="block-tabs">
-                        <div class="tabcontent" id="Now">
+                        <div class="tabcontent" id="tab-now">
                             <div class="tab-now">
                                 <div class="now-temperature">14&#176</div>
                                 <div class="now-sky"></div>
@@ -33,7 +34,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tabcontent"  id="Details">
+                        <div class="tabcontent"  id="tab-details">
                             <div class="tab-details">
                                 <div class="details-city-name">Aktobe</div>
                                 <div class="details-list">
@@ -47,7 +48,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tabcontent" id="Forecast">
+                        <div class="tabcontent" id="tab-forecast">
                             <div class="tab-forecast">
                                 <div class="forecast-city-name">Aktobe</div>
                                 <div class="forecast-list">
@@ -104,9 +105,9 @@
                         </div>
                     </div>
                     <div class="block-links">
-                        <div class="tablinks active" onclick="openCity(event, 'Now')">Now</div>
-                        <div class="tablinks" onclick="openCity(event, 'Details')">Details</div>
-                        <div class="tablinks" onclick="openCity(event, 'Forecast')">Forecast</div>
+                        <div id="link-now" class="tablinks active" onclick="openCity(event, 'tab-now')">Now</div>
+                        <div id="link-details" class="tablinks" onclick="openCity(event, 'tab-details')">Details</div>
+                        <div id="link-forecast" class="tablinks" onclick="openCity(event, 'tab-forecast')">Forecast</div>
                     </div>
                 </div>
                 <div class="section-favorite">

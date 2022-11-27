@@ -401,11 +401,11 @@ body {
   color: #fff;
 }
 
-#Details {
+#tab-details {
   display: none;
 }
 
-#Forecast {
+#tab-forecast {
   display: none;
 }
 

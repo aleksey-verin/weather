@@ -1,6 +1,5 @@
 function openCity(event, nameOfTab) {
     
-
     let tabcontent = document.getElementsByClassName("tabcontent");
     for (let i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
