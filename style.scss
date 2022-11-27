@@ -103,13 +103,15 @@ body {
 }
 
 .wrapper {
-
+  width: 620px;
+  height: 455px;
+  margin: auto;
+  padding: 10px
 }
 
 .container {
   width: 600px;
   height: 435px;
-  margin: 30px auto 0px;
   background-color: #fff;
   box-sizing: border-box;
   border: 1px solid #000000;
@@ -123,7 +125,6 @@ body {
   box-sizing: border-box;
   border-bottom: 1px solid #000000;
   display: flex;
-  /* align-items: center; */
   padding-left: 16px;
   padding-right: 16px;
   
@@ -215,11 +216,17 @@ body {
 
 }
 .favorite-button {
-  width: 22px;
-  height: 22px;
-  background: url(images/icon-heart.svg) 0 0 /100% no-repeat;
   opacity: 0.54;
+  fill: none;
+  &:hover {
+    opacity: 0.54;
+    fill: #000;
+  }
+  &:active {
+    opacity: 1;
+  }
 }
+
 
 /*================ TAB - DETAILS ==============*/
 
@@ -244,10 +251,6 @@ body {
 
 /*================ TAB - FORECAST ==============*/
 .tab-forecast {
-  /* overflow: hidden; */
-  /* overflow-block: scroll; */
-  /* height: 100%; */
-  overflow: auto;
 }
 .forecast-city-name {
   height: 68px;
@@ -261,9 +264,7 @@ body {
   padding-right: 18px;
   font-size: 18px;
   height: 274px;
-  /* overflow: auto; */
   overflow: scroll;
-
 }
 .forecast-item {
   margin-bottom: 8px;
@@ -306,12 +307,7 @@ body {
   background: url(images/icon-rain.svg) 0 0 /100% no-repeat;
 }
 
-
-
-
-
-
-/*================ ТАБЫ ССЫЛКИ ==============*/
+/*================ LINKS FOR TABS ==============*/
 .block-links {
   height: 45px;
   display: flex;
@@ -332,7 +328,7 @@ body {
   }
   &:hover {
     // transition: background-color 2s ease 0s;
-    transition: color 0.5s ease 0s;
+    // transition: color 0.5s ease 0s;
     // font-size: 19px;
   }
 }
@@ -349,7 +345,6 @@ body {
 #Forecast {
   display: none;
 }
-
 
 /*================ СЕКЦИЯ ИЗБРАННОЕ ==============*/
 
