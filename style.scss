@@ -121,7 +121,8 @@ body {
   flex-direction: column;
 }
 
-/*================ ПОИСК ==============*/
+/*================ SEARCH ==============*/
+
 .section-search {
   height: 45px;
   box-sizing: border-box;
@@ -134,7 +135,6 @@ body {
 .section-search input {
   font-size: 18px;
   flex: 1 0 auto;
-
 }
 
 .form-search {
@@ -151,19 +151,15 @@ body {
   width: 30px;
   height: 30px;
   background: url(images/icon-search.svg) 0 0 /100% no-repeat;
-
 }
 
 .section-search button {
-
 }
-
 
 .section-main {
   display: flex;
   flex: 1 1 auto;
 }
-
 
 /*================ ЛЕВАЯ СТОРОНА ==============*/
 
@@ -181,11 +177,12 @@ body {
   border-bottom: 1px solid #000000;
 }
 
-.tabcontent {
+.tab-content {
   height: 100%;
 }
 
 /*================ TAB - NOW ==============*/
+
 .tab-now {
   display: flex;
   flex-direction: column;
@@ -229,11 +226,9 @@ body {
   }
 }
 
-
 /*================ TAB - DETAILS ==============*/
 
 .tab-details {
-
 }
 .details-city-name {
   height: 68px;
@@ -251,6 +246,7 @@ body {
 }
 
 /*================ TAB - FORECAST ==============*/
+
 .tab-forecast {
 }
 .forecast-city-name {
@@ -309,13 +305,14 @@ body {
 }
 
 /*================ LINKS FOR TABS ==============*/
+
 .block-links {
   height: 45px;
   display: flex;
   font-size: 18px;
   line-height: 45px;
 }
-.tablinks {
+.tab-links {
   flex: 0 0 33.333%;
   text-align: center;
   cursor: pointer;
@@ -328,48 +325,32 @@ body {
     border-right: 1px solid #000000;
   }
   &:hover {
-    // transition: background-color 2s ease 0s;
-    // transition: color 0.5s ease 0s;
-    // font-size: 19px;
+    background-color: rgb(223, 223, 223);
+    transition: background-color 0.5s ease 0s;
   }
 }
-.tablinks.active {
+.tab-links.active {
   background-color: #000;
+  transition: none;
   color: #fff;
-}
-
-#tab-now {
-}
-#tab-details {
-  display: none;
-}
-#tab-forecast {
-  display: none;
 }
 
 /*================ СЕКЦИЯ ИЗБРАННОЕ ==============*/
 
 .section-favorite {
   flex: 1 1 50%;
-  /* padding: 18px; */
 }
 .favorite-title-block {
-  /* flex: 0 0 68px; */
   height: 68px;
   border-bottom: 1px solid #000000;
   padding-left: 18px;
   padding-bottom: 7px;
   display: flex;
   align-items: flex-end;
-  /* vertical-align: middle; */
-  /* padding-bottom: 12px; */
-  
 }
 .favorite-list-block {
   padding-left: 18px;
   padding-top: 30px;
-  /* flex: 0 0 auto; */
-  /* border-left: 1px solid #000000; */
 }
 .list-citis {
 }

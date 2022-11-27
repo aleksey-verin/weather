@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=620px">
+    <meta name="viewport" content="width=620">
     <!-- , initial-scale=1.0 -->
     <link rel="stylesheet" href="style.css">
     <title>Weather</title>
@@ -20,7 +20,7 @@
             <div class="section-main">
                 <div class="section-tabs">
                     <div class="block-tabs">
-                        <div class="tabcontent" id="tab-now">
+                        <div data-name="now" class="tab-content" style="display: block;">
                             <div class="tab-now">
                                 <div class="now-temperature">14&#176</div>
                                 <div class="now-sky"></div>
@@ -34,7 +34,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tabcontent"  id="tab-details">
+                        <div data-name="details" class="tab-content" style="display: none;">
                             <div class="tab-details">
                                 <div class="details-city-name">Aktobe</div>
                                 <div class="details-list">
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tabcontent" id="tab-forecast">
+                        <div data-name="forecast" class="tab-content" style="display: none;">
                             <div class="tab-forecast">
                                 <div class="forecast-city-name">Aktobe</div>
                                 <div class="forecast-list">
@@ -105,9 +105,9 @@
                         </div>
                     </div>
                     <div class="block-links">
-                        <div id="link-now" class="tablinks active" onclick="openCity(event, 'tab-now')">Now</div>
-                        <div id="link-details" class="tablinks" onclick="openCity(event, 'tab-details')">Details</div>
-                        <div id="link-forecast" class="tablinks" onclick="openCity(event, 'tab-forecast')">Forecast</div>
+                        <div data-name="now" class="tab-links active">Now</div>
+                        <div data-name="details" class="tab-links">Details</div>
+                        <div data-name="forecast" class="tab-links">Forecast</div>
                     </div>
                 </div>
                 <div class="section-favorite">
