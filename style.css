@@ -108,7 +108,7 @@ body {
 }
 
 .container {
-  max-width: 600px;
+  width: 600px;
   height: 435px;
   background-color: #fff;
   -webkit-box-sizing: border-box;
