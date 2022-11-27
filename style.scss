@@ -100,6 +100,8 @@ body {
   font-family: "Roboto", sans-serif;
   background-color: rgb(230, 230, 230);
   font-size: 24px;
+  max-width: 620px;
+  margin: 0 auto;
 }
 
 .wrapper {
@@ -235,7 +237,6 @@ body {
 }
 .details-city-name {
   height: 68px;
-  /* border-bottom: 1px solid #000000; */
   padding-left: 18px;
   padding-bottom: 7px;
   display: flex;
