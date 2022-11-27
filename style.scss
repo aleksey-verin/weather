@@ -178,6 +178,9 @@ body {
   border-bottom: 1px solid #000000;
 }
 
+.tabcontent {
+  height: 100%;
+}
 
 /*================ TAB - NOW ==============*/
 .tab-now {
@@ -257,7 +260,7 @@ body {
   padding-left: 18px;
   padding-right: 18px;
   font-size: 18px;
-  height: 275px;
+  height: 274px;
   /* overflow: auto; */
   overflow: scroll;
 
@@ -314,24 +317,39 @@ body {
   display: flex;
   font-size: 18px;
   line-height: 45px;
-
 }
-.link-now {
-  background-color: #000;
-  color: #fff;
-  box-sizing: border-box;
-  border-right: 1px solid #000000;
-}
-.link-details {
-  box-sizing: border-box;
-  border-right: 1px solid #000000;
-}
-.link-forecast {}
-
-.link-tabs {
+.tablinks {
   flex: 0 0 33.333%;
   text-align: center;
+  cursor: pointer;
+  &:nth-child(1) {
+    box-sizing: border-box;
+    border-right: 1px solid #000000;
+  }
+  &:nth-child(2) {
+    box-sizing: border-box;
+    border-right: 1px solid #000000;
+  }
+  &:hover {
+    // transition: background-color 2s ease 0s;
+    transition: color 0.5s ease 0s;
+    // font-size: 19px;
+  }
 }
+.tablinks.active {
+  background-color: #000;
+  color: #fff;
+}
+
+#Now {
+}
+#Details {
+  display: none;
+}
+#Forecast {
+  display: none;
+}
+
 
 /*================ СЕКЦИЯ ИЗБРАННОЕ ==============*/
 
