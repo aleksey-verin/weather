@@ -145,23 +145,27 @@ body {
 
 .input-search {
   line-height: 36px;
-
 }
+
 .button-search {
+  background-color: #fff;
   width: 30px;
   height: 30px;
-  background: url(images/icon-search.svg) 0 0 /100% no-repeat;
+  opacity: 0.54;
+  &:hover {
+    opacity: 0.8;
+    transition: opacity 0.5s ease 0s;
+  }
 }
 
-.section-search button {
-}
+/*================  ==============*/
 
 .section-main {
   display: flex;
   flex: 1 1 auto;
 }
 
-/*================ ЛЕВАЯ СТОРОНА ==============*/
+/*================ LEFT SIDE ==============*/
 
 .section-tabs {
   flex: 1 1 50%;
@@ -175,6 +179,7 @@ body {
   flex: 1 1 auto;
   box-sizing: border-box;
   border-bottom: 1px solid #000000;
+  cursor: default;
 }
 
 .tab-content {
@@ -217,6 +222,7 @@ body {
 .favorite-button {
   opacity: 0.54;
   fill: none;
+  cursor: pointer;
   &:hover {
     opacity: 0.54;
     fill: #000;
@@ -335,10 +341,11 @@ body {
   color: #fff;
 }
 
-/*================ СЕКЦИЯ ИЗБРАННОЕ ==============*/
+/*================ RIGHT SIDE - FAVORITE ==============*/
 
 .section-favorite {
   flex: 1 1 50%;
+  cursor: default;
 }
 .favorite-title-block {
   height: 68px;
