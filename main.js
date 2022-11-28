@@ -7,6 +7,8 @@ const ELEMENTS_UI = {
     WEATHER_CURRENT_TEMPER: document.querySelectorAll('.current-temp'),
     WEATHER_FEELS_TEMPER: document.querySelector('.current-feels'),
     WEATHER_CLOUDY: document.querySelector('.current-cloudy'),
+    WEATHER_PICTURE: document.querySelector('.picture-weather'),
+
     WEATHER_SUNRISE: document.querySelector('.current-sunrise'),
     WEATHER_SUNSET: document.querySelector('.current-sunset'),
 }
@@ -53,11 +55,11 @@ function getResult(nameFromInput) {
     })
   }
 
-  function celsius(kelvin) {
+  function convertKelvinToCelsius(kelvin) {
     return (kelvin - 273.15).toFixed(1)
   }
 
-  function unixToDate(unix_timestamp, timezone) {
+  function convertTimestampToDate(unix_timestamp, timezone) {
       let date = new Date(unix_timestamp * 1000)
       let hours = date.getUTCHours() + timezone / 3600
       let minutes = "0" + date.getMinutes()
@@ -67,13 +69,13 @@ function getResult(nameFromInput) {
   function showResult(data) {
 
     ELEMENTS_UI.CITY_NAME.forEach(item => item.textContent = data.name)
-    ELEMENTS_UI.WEATHER_CURRENT_TEMPER.forEach(item => item.textContent = celsius(data.main.temp))
-    ELEMENTS_UI.WEATHER_FEELS_TEMPER.textContent = celsius(data.main.feels_like)
+    ELEMENTS_UI.WEATHER_CURRENT_TEMPER.forEach(item => item.textContent = convertKelvinToCelsius(data.main.temp))
+    ELEMENTS_UI.WEATHER_FEELS_TEMPER.textContent = convertKelvinToCelsius(data.main.feels_like)
     ELEMENTS_UI.WEATHER_CLOUDY.textContent = data.weather[0].main
+    ELEMENTS_UI.WEATHER_PICTURE.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`
 
-    
-    ELEMENTS_UI.WEATHER_SUNRISE.textContent = unixToDate(data.sys.sunrise, data.timezone)
-    ELEMENTS_UI.WEATHER_SUNSET.textContent = unixToDate(data.sys.sunset, data.timezone)
+    ELEMENTS_UI.WEATHER_SUNRISE.textContent = convertTimestampToDate(data.sys.sunrise, data.timezone)
+    ELEMENTS_UI.WEATHER_SUNSET.textContent = convertTimestampToDate(data.sys.sunset, data.timezone)
     console.log(data)
     // console.log(data.sys.sunrise)
     // console.log(data.sys.sunset)
