@@ -18,7 +18,6 @@
                         <svg width="30" height="30" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.3775 14.5H15.385L15.04 14.1575C16.2588 12.7363 17 10.8938 17 8.87502C17 4.38752 13.3625 0.750021 8.875 0.750021C4.3875 0.750021 0.75 4.38752 0.75 8.87502C0.75 13.3625 4.3875 17 8.875 17C10.8938 17 12.735 16.26 14.1563 15.0425L14.5013 15.385V16.375L20.7488 22.6138L22.6125 20.75L16.3775 14.5ZM8.87501 14.5C5.76751 14.5 3.25001 11.9825 3.25001 8.87502C3.25001 5.76877 5.76751 3.25002 8.87501 3.25002C11.9813 3.25002 14.5 5.76877 14.5 8.87502C14.5 11.9825 11.9813 14.5 8.87501 14.5Z" fill="black"/>
                         </svg>
                     </button>
-                    
                 </form>
             </div>
             <div class="section-main">
@@ -26,7 +25,7 @@
                     <div class="block-tabs">
                         <div data-name="now" class="tab-content" style="display: block;">
                             <div class="tab-now">
-                                <div class="now-temperature">14&#176</div>
+                                <div class="now-temperature"><span class="current-temp">14</span>&#176</div>
                                 <div class="now-sky"></div>
                                 <div class="now-city">
                                     <div class="city-name">Aktobe</div>
@@ -39,21 +38,21 @@
                         </div>
                         <div data-name="details" class="tab-content" style="display: none;">
                             <div class="tab-details">
-                                <div class="details-city-name">Aktobe</div>
+                                <div class="details-city-name city-name">Aktobe</div>
                                 <div class="details-list">
                                     <ul>
-                                        <li class="details-item">Temperature: 14</li>
-                                        <li class="details-item">Feels like: 10</li>
-                                        <li class="details-item">Weather: Clouds</li>
-                                        <li class="details-item">Sunrise: 03:21</li>
-                                        <li class="details-item">Sunset: 18:54</li>
+                                        <li class="details-item">Temperature: <span class="current-temp">14</span>&#176</li>
+                                        <li class="details-item">Feels like: <span class="current-feels">14</span>&#176</li>
+                                        <li class="details-item">Weather: <span class="current-cloudy">Clouds!</span></li>
+                                        <li class="details-item">Sunrise: <span class="current-sunrise">03:21</span></li>
+                                        <li class="details-item">Sunset: <span class="current-sunset">18:54</span></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div data-name="forecast" class="tab-content" style="display: none;">
                             <div class="tab-forecast">
-                                <div class="forecast-city-name">Aktobe</div>
+                                <div class="forecast-city-name city-name">Aktobe</div>
                                 <div class="forecast-list">
                                     <div class="forecast-item">
                                         <div class="date-time">
