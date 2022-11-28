@@ -39,7 +39,7 @@ function getCity() {
 
 function getResult(nameFromInput) {
     
-    const serverUrl = 'http://api.openweathermap.org/data/2.5/weather';
+    const serverUrl = 'https://api.openweathermap.org/data/2.5/weather';
     const cityName = nameFromInput;
     const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f'
     const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
