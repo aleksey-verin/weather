@@ -128,7 +128,6 @@ function showResult(data) {
 
     // current-temp
 
-
     // let nameForScreen = (nameFromInput.toLowerCase())[0].toUpperCase() + (nameFromInput.toLowerCase()).slice(1)
     // let probabilityForScreen = (probability * 100).toFixed(0)
   
