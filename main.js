@@ -81,7 +81,7 @@ function showMessageLoading() {
                 ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Data is being loaded. Wait, please..`
             }
         })
-    }, 100)
+    }, 500)
 }
 
 ELEMENTS_UI.SYSTEM_MESSAGE_CLOSE.addEventListener('click', () => ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none')
