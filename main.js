@@ -45,13 +45,29 @@ function getResult(nameFromInput) {
     const cityName = nameFromInput;
     const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f'
     const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
+    
+    setTimeout(() => {
+        ELEMENTS_UI.CITY_NAME.forEach((item) => {
+            if (!item.classList.contains('correct')) {
+                item.classList.add('error')
+                item.textContent = `loading data...`
+            }
+        })
+    }, 1000)
 
     let response = fetch(url)
     response
     .then(response => response.json())
     .then(data => showResult(data))
     .catch(function(err) {
-        ELEMENTS_UI.CITY_NAME.forEach(item => item.textContent = `network failure`)
+        ELEMENTS_UI.CITY_NAME.forEach((item) => {
+            item.classList.add('error')
+            if (err.message !== 'Failed to fetch') {
+                item.textContent = `city not found`
+            } else {
+                item.textContent = `sorry, network failure`
+            }
+        })
     })
   }
 
@@ -68,7 +84,10 @@ function getResult(nameFromInput) {
   
   function showResult(data) {
 
-    ELEMENTS_UI.CITY_NAME.forEach(item => item.textContent = data.name)
+    ELEMENTS_UI.CITY_NAME.forEach((item) => {
+        item.textContent = data.name
+        item.classList.add('correct')
+    })
     ELEMENTS_UI.WEATHER_CURRENT_TEMPER.forEach(item => item.textContent = convertKelvinToCelsius(data.main.temp))
     ELEMENTS_UI.WEATHER_FEELS_TEMPER.textContent = convertKelvinToCelsius(data.main.feels_like)
     ELEMENTS_UI.WEATHER_CLOUDY.textContent = data.weather[0].main
