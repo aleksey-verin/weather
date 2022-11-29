@@ -4,11 +4,11 @@ const ELEMENTS_UI = {
     TAB_LINKS: document.querySelectorAll(".tab-links"),
     TAB_CONTENTS: document.querySelectorAll(".tab-content"),
     CITY_NAME: document.querySelectorAll('.city-name'),
+    
     WEATHER_CURRENT_TEMPER: document.querySelectorAll('.current-temp'),
     WEATHER_FEELS_TEMPER: document.querySelector('.current-feels'),
     WEATHER_CLOUDY: document.querySelector('.current-cloudy'),
     WEATHER_PICTURE: document.querySelector('.picture-weather'),
-
     WEATHER_SUNRISE: document.querySelector('.current-sunrise'),
     WEATHER_SUNSET: document.querySelector('.current-sunset'),
 
@@ -93,6 +93,12 @@ function convertKelvinToCelsius(kelvin) {
 function convertTimestampToDate(unix_timestamp, timezone) {
     let date = new Date(unix_timestamp * 1000)
     let hours = date.getUTCHours() + timezone / 3600
+    if (hours < 0) {
+        hours = hours + 24
+    }
+    if (hours > 24) {
+        hours = hours - 24
+    }
     let minutes = "0" + date.getMinutes()
     return hours + ':' + minutes.slice(-2)
 }
