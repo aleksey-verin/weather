@@ -369,7 +369,23 @@ body {
 
 /*================ ERROR ==============*/
 
-.error {
-  color:#ff4040;
+.error-block {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  background: rgb(132, 132, 132);
+  padding: 5px;
+  font-size: 18px;
+  color: #ffffff;
+}
+.error-message {
+  display: inline-block;
+}
+.error-close {
   font-size: 16px;
+  display: inline-block;
+  color: #ffffff;
+  cursor: pointer;
 }

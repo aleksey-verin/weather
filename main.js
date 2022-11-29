@@ -11,6 +11,10 @@ const ELEMENTS_UI = {
 
     WEATHER_SUNRISE: document.querySelector('.current-sunrise'),
     WEATHER_SUNSET: document.querySelector('.current-sunset'),
+
+    SYSTEM_MESSAGE_BLOCK: document.querySelector('.error-block'),
+    SYSTEM_MESSAGE_TEXT: document.querySelector('.error-message'),
+    SYSTEM_MESSAGE_CLOSE: document.querySelector('.error-close'),
 }
 
 ELEMENTS_UI.TAB_LINKS.forEach((item) => {
@@ -46,30 +50,36 @@ function getResult(nameFromInput) {
     const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f'
     const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
     
-    setTimeout(() => {
-        ELEMENTS_UI.CITY_NAME.forEach((item) => {
-            if (!item.classList.contains('correct')) {
-                item.classList.add('error')
-                item.textContent = `loading data...`
-            }
-        })
-    }, 1000)
-
     let response = fetch(url)
     response
     .then(response => response.json())
-    .then(data => showResult(data))
+    .then((data) => {
+        showResult(data)
+        ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
+    })
     .catch(function(err) {
+        ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'block'
+        if (err.message !== 'Failed to fetch') {
+            ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `City not found. Please enter another city name..`
+        } else {
+            ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Sorry, network failure. Please try again later..`
+        }
+        setTimeout(() => {
+            ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
+        }, 5000)
+    })
+
+    setTimeout(() => {
         ELEMENTS_UI.CITY_NAME.forEach((item) => {
-            item.classList.add('error')
-            if (err.message !== 'Failed to fetch') {
-                item.textContent = `city not found`
-            } else {
-                item.textContent = `sorry, network failure`
+            if (!item.classList.contains('correct')) {
+                ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'block'
+                ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Data is being loaded. Wait, please..`
             }
         })
-    })
+    }, 500)
 }
+
+ELEMENTS_UI.SYSTEM_MESSAGE_CLOSE.addEventListener('click', () => ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none')
 
 function convertKelvinToCelsius(kelvin) {
     return (kelvin - 273.15).toFixed(1)
