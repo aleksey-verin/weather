@@ -69,20 +69,20 @@ function getResult(nameFromInput) {
             }
         })
     })
-  }
+}
 
-  function convertKelvinToCelsius(kelvin) {
+function convertKelvinToCelsius(kelvin) {
     return (kelvin - 273.15).toFixed(1)
-  }
+}
 
-  function convertTimestampToDate(unix_timestamp, timezone) {
-      let date = new Date(unix_timestamp * 1000)
-      let hours = date.getUTCHours() + timezone / 3600
-      let minutes = "0" + date.getMinutes()
-      return hours + ':' + minutes.slice(-2)
-  }
+function convertTimestampToDate(unix_timestamp, timezone) {
+    let date = new Date(unix_timestamp * 1000)
+    let hours = date.getUTCHours() + timezone / 3600
+    let minutes = "0" + date.getMinutes()
+    return hours + ':' + minutes.slice(-2)
+}
   
-  function showResult(data) {
+function showResult(data) {
 
     ELEMENTS_UI.CITY_NAME.forEach((item) => {
         item.textContent = data.name
@@ -102,6 +102,7 @@ function getResult(nameFromInput) {
     // console.log(new Date.toString(data.sys.sunrise))
     // console.log(new Date(data.sys.sunset))
     // console.log(data.weather[0].main)
+}
    
 
     // current-temp
@@ -128,7 +129,6 @@ function getResult(nameFromInput) {
     //     ELEMENTS_FROM_UI.RESULT_PROBABILITY.textContent = ''
     //     break;
     // }
-  }
 //  
 
 // ELEMENTS_FROM_UI.FORM.addEventListener("submit", getMale);
