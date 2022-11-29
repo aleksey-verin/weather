@@ -97,7 +97,7 @@ function convertTimestampToDate(unix_timestamp, timezone) {
         hours = hours + 24
     }
     if (hours > 24) {
-        hours = hours - 24
+        hours = hours - 240
     }
     let minutes = "0" + date.getMinutes()
     return hours + ':' + minutes.slice(-2)
