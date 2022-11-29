@@ -49,7 +49,7 @@ function getResult(nameFromInput) {
     const cityName = nameFromInput;
     const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f'
     const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
-    
+
     let response = fetch(url)
     response
     .then(response => response.json())
@@ -69,14 +69,19 @@ function getResult(nameFromInput) {
         }, 5000)
     })
 
+    showMessageLoading()
+}
+
+function showMessageLoading() {
+    ELEMENTS_UI.CITY_NAME.forEach(item => item.classList.remove('correct'))
     setTimeout(() => {
         ELEMENTS_UI.CITY_NAME.forEach((item) => {
-            if (!item.classList.contains('correct')) {
+            if (!item.classList.contains('correct')) { 
                 ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'block'
                 ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Data is being loaded. Wait, please..`
             }
         })
-    }, 500)
+    }, 100)
 }
 
 ELEMENTS_UI.SYSTEM_MESSAGE_CLOSE.addEventListener('click', () => ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none')
