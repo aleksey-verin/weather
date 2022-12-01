@@ -195,6 +195,7 @@ body {
   height: 100%;
 }
 .now-temperature {
+  display: none;
   flex: 1 1 33.333%;
   font-size: 70px;
   padding-left: 23px;
@@ -205,6 +206,7 @@ body {
 }
 
 .picture-weather {
+  display: none;
   width: 160px;
   height: 160px;
 }
@@ -353,6 +355,7 @@ body {
 .section-favorite {
   flex: 1 1 50%;
   cursor: default;
+  position: relative;
 }
 .favorite-title-block {
   height: 68px;
@@ -414,4 +417,28 @@ body {
   display: inline-block;
   color: #ffffff;
   cursor: pointer;
+}
+
+.button-clear {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  display: flex;
+  width: 80px;
+  font-size: 14px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  background-color: #999;
+  // border: 1px solid #989898;
+  // border-radius: 6px;
+  cursor: pointer;
+  z-index: 5;
+}
+.button-clear:hover {
+  background-color: #dfdddd;
+}
+.button-clear:active {
+  background-color: #c4c3c3;
 }

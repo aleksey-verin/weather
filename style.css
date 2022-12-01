@@ -229,6 +229,7 @@ body {
 }
 
 .now-temperature {
+  display: none;
   -webkit-box-flex: 1;
       -ms-flex: 1 1 33.333%;
           flex: 1 1 33.333%;
@@ -242,6 +243,7 @@ body {
 }
 
 .picture-weather {
+  display: none;
   width: 160px;
   height: 160px;
 }
@@ -432,6 +434,7 @@ body {
       -ms-flex: 1 1 50%;
           flex: 1 1 50%;
   cursor: default;
+  position: relative;
 }
 
 .favorite-title-block {
@@ -501,5 +504,34 @@ body {
   display: inline-block;
   color: #ffffff;
   cursor: pointer;
+}
+
+.button-clear {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80px;
+  font-size: 14px;
+  height: 20px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #999;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.button-clear:hover {
+  background-color: #dfdddd;
+}
+
+.button-clear:active {
+  background-color: #c4c3c3;
 }
 /*# sourceMappingURL=style.css.map */

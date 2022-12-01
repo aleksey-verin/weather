@@ -22,6 +22,32 @@ const ELEMENTS_UI = {
 }
 
 let LIST_OF_FAVORITE_CITIES = []
+let currentCity
+
+LIST_OF_FAVORITE_CITIES = JSON.parse(localStorage.getItem('favoriteCities')) //===>>LIST<<===
+
+currentCity = JSON.parse(localStorage.getItem('currentCity')) //===>>CITY<<===
+if (!currentCity) {
+    currentCity = 'Atlanta'
+}
+
+getResult(currentCity)
+
+RenderForFavoriteList()
+
+document.querySelector('.button-clear').addEventListener("click", clearAllFavoriteList)
+
+function clearAllFavoriteList() {
+  
+    localStorage.clear()
+    LIST_OF_FAVORITE_CITIES = []
+    console.log(LIST_OF_FAVORITE_CITIES)
+    localStorage.setItem('favoriteCities', JSON.stringify(LIST_OF_FAVORITE_CITIES));
+    getResult(currentCity)
+    RenderForFavoriteList()
+
+};
+
 
 ELEMENTS_UI.TAB_LINKS.forEach((item) => {
     item.addEventListener('click', showTab)
@@ -113,10 +139,12 @@ function showResult(data) {
     ELEMENTS_UI.CITY_NAME_DETAILS.textContent = data.name
     ELEMENTS_UI.CITY_NAME_NOW.classList.add('correct')
     
+    document.querySelector('.now-temperature').style.display = 'inline'
     ELEMENTS_UI.WEATHER_CURRENT_TEMPER.forEach(item => item.textContent = convertKelvinToCelsius(data.main.temp))
     ELEMENTS_UI.WEATHER_FEELS_TEMPER.textContent = convertKelvinToCelsius(data.main.feels_like)
     ELEMENTS_UI.WEATHER_CLOUDY.textContent = data.weather[0].main
     ELEMENTS_UI.WEATHER_PICTURE.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`
+    ELEMENTS_UI.WEATHER_PICTURE.style.display = 'block'
 
     ELEMENTS_UI.WEATHER_SUNRISE.textContent = convertTimestampToDate(data.sys.sunrise, data.timezone)
     ELEMENTS_UI.WEATHER_SUNSET.textContent = convertTimestampToDate(data.sys.sunset, data.timezone)
@@ -127,6 +155,8 @@ function showResult(data) {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
     }
 
+    currentCity = data.name
+    localStorage.setItem('currentCity', JSON.stringify(currentCity)); // <<===CITY===>>
     
     console.log(data)
 }
@@ -136,21 +166,35 @@ ELEMENTS_UI.FAVORITE_BUTTON.addEventListener('click', addOrRemoveCity)
 function addOrRemoveCity() {
     const cityName = ELEMENTS_UI.CITY_NAME_NOW.textContent
 
-    if (LIST_OF_FAVORITE_CITIES.includes(cityName) === false) {
-        ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
-        LIST_OF_FAVORITE_CITIES.push(ELEMENTS_UI.CITY_NAME_NOW.textContent)
-        RenderForFavoriteList()
+    if (LIST_OF_FAVORITE_CITIES) {
+
+        if (LIST_OF_FAVORITE_CITIES.includes(cityName) === false) {
+            ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
+            LIST_OF_FAVORITE_CITIES.push(ELEMENTS_UI.CITY_NAME_NOW.textContent)
+            
+            localStorage.setItem('favoriteCities', JSON.stringify(LIST_OF_FAVORITE_CITIES)); // <<===list===>>
+            
+            RenderForFavoriteList()
+        } else {
+            ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
+            LIST_OF_FAVORITE_CITIES = LIST_OF_FAVORITE_CITIES.filter(item => item !== ELEMENTS_UI.CITY_NAME_NOW.textContent)
+        
+            localStorage.setItem('favoriteCities', JSON.stringify(LIST_OF_FAVORITE_CITIES)); // <<===list===>>
+            
+            RenderForFavoriteList()
+        }
     } else {
-        ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
-        LIST_OF_FAVORITE_CITIES = LIST_OF_FAVORITE_CITIES.filter(item => item !== ELEMENTS_UI.CITY_NAME_NOW.textContent)
-        RenderForFavoriteList()
+
     }
+
 }
 
 function removeItemButton() {
     const cityName = event.target.previousElementSibling.textContent
  
     LIST_OF_FAVORITE_CITIES = LIST_OF_FAVORITE_CITIES.filter(item => item !== cityName)
+
+    localStorage.setItem('favoriteCities', JSON.stringify(LIST_OF_FAVORITE_CITIES)); // <<===list===>>
 
     if (cityName === ELEMENTS_UI.CITY_NAME_NOW.textContent) {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
@@ -162,31 +206,40 @@ function removeItemButton() {
 
 function RenderForFavoriteList() {
 
+    LIST_OF_FAVORITE_CITIES = JSON.parse(localStorage.getItem('favoriteCities')) //===>>list<<===
+    if (LIST_OF_FAVORITE_CITIES === null) {LIST_OF_FAVORITE_CITIES = []}
     console.log(LIST_OF_FAVORITE_CITIES)
     ELEMENTS_UI.FAVORITE_LIST.textContent = ''
     
-    LIST_OF_FAVORITE_CITIES.forEach((item) => {
+    if (LIST_OF_FAVORITE_CITIES) {
 
-        let cityItem = document.createElement('div')
-        cityItem.className = 'list-item'
-        
-        let cityItemName = document.createElement('div')
-        cityItemName.className = 'list-item_name'
-        cityItemName.textContent = item
-        cityItemName.addEventListener('click', () => getResult(event.target.textContent))
-        
-        let cityItemBtn = document.createElement('div')
-        cityItemBtn.className = 'list-item_btn'
-        cityItemBtn.innerHTML = '&#9587'
-        cityItemBtn.addEventListener('click', removeItemButton)
-        
-        cityItem.prepend(cityItemBtn)
-        cityItem.prepend(cityItemName)
-
-        ELEMENTS_UI.FAVORITE_LIST.prepend(cityItem)
-    })
+        LIST_OF_FAVORITE_CITIES.forEach((item) => {
     
+            let cityItem = document.createElement('div')
+            cityItem.className = 'list-item'
+            
+            let cityItemName = document.createElement('div')
+            cityItemName.className = 'list-item_name'
+            cityItemName.textContent = item
+            cityItemName.addEventListener('click', () => getResult(event.target.textContent))
+            
+            let cityItemBtn = document.createElement('div')
+            cityItemBtn.className = 'list-item_btn'
+            cityItemBtn.innerHTML = '&#9587'
+            cityItemBtn.addEventListener('click', removeItemButton)
+            
+            cityItem.prepend(cityItemBtn)
+            cityItem.prepend(cityItemName)
+    
+            ELEMENTS_UI.FAVORITE_LIST.prepend(cityItem)
+        })
+    }
 }
+
+
+// storage.saveFavoriteCities(favoriteCities)
+// const favoriteCities = storage.getFavoriteCities();
+// const currentCity = storage.getCurrentCity();
 
 // function showAgain() {
 //     // console.log(event)
