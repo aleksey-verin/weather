@@ -21,12 +21,33 @@ const ELEMENTS_UI = {
     FAVORITE_LIST: document.querySelector('.list-cities'),
 }
 
-let LIST_OF_FAVORITE_CITIES = []
-let currentCity
+// storage.saveFavoriteCities(favoriteCities)
+// const favoriteCities = storage.getFavoriteCities();
+// const currentCity = storage.getCurrentCity();
 
-LIST_OF_FAVORITE_CITIES = JSON.parse(localStorage.getItem('favoriteCities')) //===>>LIST<<===
+const storage = {
+    saveFavoriteCitiesInStorage(LIST_OF_FAVORITE_CITIES) {
+        return localStorage.setItem('favoriteCities', JSON.stringify(LIST_OF_FAVORITE_CITIES))
+    },
+    getFavoriteCitiesFromStorage() {
+        return JSON.parse(localStorage.getItem('favoriteCities'))
+    },
+    saveCurrentCityInStorage(currentCity) {
+        return localStorage.setItem('currentCity', JSON.stringify(currentCity))
+    },
+    getCurrentCityFromStorage() {
+        return JSON.parse(localStorage.getItem('currentCity'))
+    },
+}
 
-currentCity = JSON.parse(localStorage.getItem('currentCity')) //===>>CITY<<===
+
+
+// let LIST_OF_FAVORITE_CITIES = []
+// let currentCity
+
+let LIST_OF_FAVORITE_CITIES = storage.getFavoriteCitiesFromStorage() // storage ==>> LIST
+
+let currentCity = storage.getCurrentCityFromStorage() // storage ==>> currentCity
 if (!currentCity) {
     currentCity = 'Atlanta'
 }
@@ -41,8 +62,8 @@ function clearAllFavoriteList() {
   
     localStorage.clear()
     LIST_OF_FAVORITE_CITIES = []
-    console.log(LIST_OF_FAVORITE_CITIES)
-    localStorage.setItem('favoriteCities', JSON.stringify(LIST_OF_FAVORITE_CITIES));
+    // console.log(LIST_OF_FAVORITE_CITIES)
+    storage.saveFavoriteCitiesInStorage(LIST_OF_FAVORITE_CITIES) //  LIST ==>> storage
     getResult(currentCity)
     RenderForFavoriteList()
 
@@ -65,12 +86,13 @@ function showTab() {
     })
 }
 
+
 ELEMENTS_UI.FORM_SEARCH.addEventListener('submit', getCity)
 
 function getCity() {
     if (ELEMENTS_UI.INPUT_SEARCH.value !== '') {
         event.preventDefault();
-        getResult(ELEMENTS_UI.INPUT_SEARCH.value)
+        getResult(ELEMENTS_UI.INPUT_SEARCH.value.trim())
         ELEMENTS_UI.INPUT_SEARCH.value = ''
       }
 }
@@ -82,16 +104,25 @@ function getResult(nameFromInput) {
     const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f'
     const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
 
+    let errorStatus = new Number
+
     let response = fetch(url)
     response
-    .then(response => response.json())
+    .then(response => {
+        if (response.ok) {
+            return response.json()
+        } else {
+           return errorStatus = response.status
+        }  
+    })
     .then((data) => {
         showResult(data)
         ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
     })
     .catch(function(err) {
+
         ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'block'
-        if (err.message !== 'Failed to fetch') {
+        if (errorStatus === 404) {
             ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `City not found. Please enter another city name..`
         } else {
             ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Sorry, network failure. Please try again later..`
@@ -101,17 +132,6 @@ function getResult(nameFromInput) {
         }, 5000)
     })
 
-    showMessageLoading()
-}
-
-function showMessageLoading() {
-    ELEMENTS_UI.CITY_NAME_NOW.classList.remove('correct')
-    setTimeout(() => {
-            if (!ELEMENTS_UI.CITY_NAME_NOW.classList.contains('correct')) { 
-                ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'block'
-                ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Data is being loaded. Wait, please..`
-            }
-        }, 500)
 }
 
 ELEMENTS_UI.SYSTEM_MESSAGE_CLOSE.addEventListener('click', () => ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none')
@@ -137,7 +157,6 @@ function showResult(data) {
 
     ELEMENTS_UI.CITY_NAME_NOW.textContent = data.name
     ELEMENTS_UI.CITY_NAME_DETAILS.textContent = data.name
-    ELEMENTS_UI.CITY_NAME_NOW.classList.add('correct')
     
     document.querySelector('.now-temperature').style.display = 'inline'
     ELEMENTS_UI.WEATHER_CURRENT_TEMPER.forEach(item => item.textContent = convertKelvinToCelsius(data.main.temp))
@@ -156,9 +175,8 @@ function showResult(data) {
     }
 
     currentCity = data.name
-    localStorage.setItem('currentCity', JSON.stringify(currentCity)); // <<===CITY===>>
+    storage.saveCurrentCityInStorage(currentCity) // currentCity ==>> storage
     
-    console.log(data)
 }
 
 ELEMENTS_UI.FAVORITE_BUTTON.addEventListener('click', addOrRemoveCity)
@@ -166,27 +184,21 @@ ELEMENTS_UI.FAVORITE_BUTTON.addEventListener('click', addOrRemoveCity)
 function addOrRemoveCity() {
     const cityName = ELEMENTS_UI.CITY_NAME_NOW.textContent
 
-    if (LIST_OF_FAVORITE_CITIES) {
-
-        if (LIST_OF_FAVORITE_CITIES.includes(cityName) === false) {
-            ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
-            LIST_OF_FAVORITE_CITIES.push(ELEMENTS_UI.CITY_NAME_NOW.textContent)
-            
-            localStorage.setItem('favoriteCities', JSON.stringify(LIST_OF_FAVORITE_CITIES)); // <<===list===>>
-            
-            RenderForFavoriteList()
-        } else {
-            ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
-            LIST_OF_FAVORITE_CITIES = LIST_OF_FAVORITE_CITIES.filter(item => item !== ELEMENTS_UI.CITY_NAME_NOW.textContent)
+    if (LIST_OF_FAVORITE_CITIES.includes(cityName) === false) {
+        ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
+        LIST_OF_FAVORITE_CITIES.push(cityName)
         
-            localStorage.setItem('favoriteCities', JSON.stringify(LIST_OF_FAVORITE_CITIES)); // <<===list===>>
-            
-            RenderForFavoriteList()
-        }
+        storage.saveFavoriteCitiesInStorage(LIST_OF_FAVORITE_CITIES) //  LIST ==>> storage
+        
+        RenderForFavoriteList()
     } else {
-
+        ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
+        LIST_OF_FAVORITE_CITIES = LIST_OF_FAVORITE_CITIES.filter(item => item !== cityName)
+    
+        storage.saveFavoriteCitiesInStorage(LIST_OF_FAVORITE_CITIES) //  LIST ==>> storage
+        
+        RenderForFavoriteList()
     }
-
 }
 
 function removeItemButton() {
@@ -194,7 +206,7 @@ function removeItemButton() {
  
     LIST_OF_FAVORITE_CITIES = LIST_OF_FAVORITE_CITIES.filter(item => item !== cityName)
 
-    localStorage.setItem('favoriteCities', JSON.stringify(LIST_OF_FAVORITE_CITIES)); // <<===list===>>
+    storage.saveFavoriteCitiesInStorage(LIST_OF_FAVORITE_CITIES) //  LIST ==>> storage
 
     if (cityName === ELEMENTS_UI.CITY_NAME_NOW.textContent) {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
@@ -206,9 +218,12 @@ function removeItemButton() {
 
 function RenderForFavoriteList() {
 
-    LIST_OF_FAVORITE_CITIES = JSON.parse(localStorage.getItem('favoriteCities')) //===>>list<<===
-    if (LIST_OF_FAVORITE_CITIES === null) {LIST_OF_FAVORITE_CITIES = []}
-    console.log(LIST_OF_FAVORITE_CITIES)
+    LIST_OF_FAVORITE_CITIES = storage.getFavoriteCitiesFromStorage() // storage ==>>  LIST 
+    
+    if (LIST_OF_FAVORITE_CITIES === null) {
+        LIST_OF_FAVORITE_CITIES = []
+    }
+    
     ELEMENTS_UI.FAVORITE_LIST.textContent = ''
     
     if (LIST_OF_FAVORITE_CITIES) {
@@ -235,78 +250,3 @@ function RenderForFavoriteList() {
         })
     }
 }
-
-
-// storage.saveFavoriteCities(favoriteCities)
-// const favoriteCities = storage.getFavoriteCities();
-// const currentCity = storage.getCurrentCity();
-
-// function showAgain() {
-//     // console.log(event)
-//     getResult(event.target.textContent)
-// }
-
-
-
-
-// console.log(data.sys.sunrise)
-// console.log(data.sys.sunset)
-// console.log(data.sys.sunset.getTimezoneOffset())
-// console.log(new Date.toString(data.sys.sunrise))
-// console.log(new Date(data.sys.sunset))
-// console.log(data.weather[0].main)
-
-    // current-temp
-
-    // let nameForScreen = (nameFromInput.toLowerCase())[0].toUpperCase() + (nameFromInput.toLowerCase()).slice(1)
-    // let probabilityForScreen = (probability * 100).toFixed(0)
-  
-    // switch (gender) {
-    //   case 'male':
-    //     ELEMENTS_FROM_UI.RESULT_MAIN.firstElementChild.textContent = nameForScreen
-    //     document.querySelector('.text_result').firstElementChild.nextElementSibling.textContent = ' - '
-    //     ELEMENTS_FROM_UI.RESULT_MAIN.lastElementChild.textContent = 'мужчина'
-    //     ELEMENTS_FROM_UI.RESULT_PROBABILITY.textContent = `С вероятностью: ${probabilityForScreen}%`
-    //     break;
-    //   case 'female':
-    //     ELEMENTS_FROM_UI.RESULT_MAIN.firstElementChild.textContent = nameForScreen
-    //     document.querySelector('.text_result').firstElementChild.nextElementSibling.textContent = ' - '
-    //     ELEMENTS_FROM_UI.RESULT_MAIN.lastElementChild.textContent = 'женщина'
-    //     ELEMENTS_FROM_UI.RESULT_PROBABILITY.textContent = `С вероятностью: ${probabilityForScreen}%`
-    //     break;
-    //   default:
-    //     ELEMENTS_FROM_UI.RESULT_MAIN.innerHTML = `Имя <span>${nameForScreen}</span> </br><span>не найдено</span>`
-    //     ELEMENTS_FROM_UI.RESULT_PROBABILITY.textContent = ''
-    //     break;
-    // }
-//  
-
-// ELEMENTS_FROM_UI.FORM.addEventListener("submit", getMale);
-
-// function getMale(event) {
-//   if (ELEMENTS_FROM_UI.INPUT.value !== '') {
-//     event.preventDefault();
-//     let nameInLatin = cyrillicToLatin(ELEMENTS_FROM_UI.INPUT.value)
-//     getResult(nameInLatin, ELEMENTS_FROM_UI.INPUT.value)
-//     ELEMENTS_FROM_UI.INPUT.value = ''
-//   }
-// }
-
-// function openTab(event, nameOfTab) {
-    
-//     let tabcontent = document.getElementsByClassName("tabcontent");
-//     for (let i = 0; i < tabcontent.length; i++) {
-//         tabcontent[i].style.display = "none";
-//     }
-//     let tablinks = document.getElementsByClassName("tablinks");
-//     for (let i = 0; i < tablinks.length; i++) {
-//         tablinks[i].className = tablinks[i].className.replace(" active", "");
-//     }
-//     document.getElementById(nameOfTab).style.display = "block";
-//     event.currentTarget.className += " active";
-// }
-
-// const serverUrl = 'http://api.openweathermap.org/data/2.5/weather';
-// const cityName = 'boston';
-// const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f'; (этот ключ имеет ограничение в кол-ве запросов, если будут ошибки - придется сгенерировать новый или спросить в чате)
-// const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;

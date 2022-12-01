@@ -147,6 +147,10 @@ body {
   line-height: 36px;
 }
 
+.input-search:focus::placeholder {
+  color: transparent;
+}
+
 .button-search {
   background-color: #fff;
   width: 30px;
@@ -426,8 +430,10 @@ body {
 
   display: flex;
   width: 80px;
-  font-size: 14px;
+  font-size: 12px;
+  // line-height: 20px;
   height: 20px;
+  // line-height: 20px;
   align-items: center;
   justify-content: center;
   background-color: #999;

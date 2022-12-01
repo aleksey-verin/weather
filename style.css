@@ -159,6 +159,22 @@ body {
   line-height: 36px;
 }
 
+.input-search:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.input-search:focus:-ms-input-placeholder {
+  color: transparent;
+}
+
+.input-search:focus::-ms-input-placeholder {
+  color: transparent;
+}
+
+.input-search:focus::placeholder {
+  color: transparent;
+}
+
 .button-search {
   background-color: #fff;
   width: 30px;
@@ -514,7 +530,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   width: 80px;
-  font-size: 14px;
+  font-size: 12px;
   height: 20px;
   -webkit-box-align: center;
       -ms-flex-align: center;
