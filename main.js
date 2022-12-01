@@ -3,7 +3,8 @@ const ELEMENTS_UI = {
     INPUT_SEARCH: document.querySelector(".input-search"),
     TAB_LINKS: document.querySelectorAll(".tab-links"),
     TAB_CONTENTS: document.querySelectorAll(".tab-content"),
-    CITY_NAME: document.querySelectorAll('.city-name'),
+    CITY_NAME_NOW: document.querySelector('.now-city-name'),
+    CITY_NAME_DETAILS: document.querySelector('.details-city-name'),
     
     WEATHER_CURRENT_TEMPER: document.querySelectorAll('.current-temp'),
     WEATHER_FEELS_TEMPER: document.querySelector('.current-feels'),
@@ -15,7 +16,12 @@ const ELEMENTS_UI = {
     SYSTEM_MESSAGE_BLOCK: document.querySelector('.error-block'),
     SYSTEM_MESSAGE_TEXT: document.querySelector('.error-message'),
     SYSTEM_MESSAGE_CLOSE: document.querySelector('.error-close'),
+
+    FAVORITE_BUTTON: document.querySelector('.favorite-button'),
+    FAVORITE_LIST: document.querySelector('.list-cities'),
 }
+
+let LIST_OF_FAVORITE_CITIES = []
 
 ELEMENTS_UI.TAB_LINKS.forEach((item) => {
     item.addEventListener('click', showTab)
@@ -73,15 +79,13 @@ function getResult(nameFromInput) {
 }
 
 function showMessageLoading() {
-    ELEMENTS_UI.CITY_NAME.forEach(item => item.classList.remove('correct'))
+    ELEMENTS_UI.CITY_NAME_NOW.classList.remove('correct')
     setTimeout(() => {
-        ELEMENTS_UI.CITY_NAME.forEach((item) => {
-            if (!item.classList.contains('correct')) { 
+            if (!ELEMENTS_UI.CITY_NAME_NOW.classList.contains('correct')) { 
                 ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'block'
                 ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Data is being loaded. Wait, please..`
             }
-        })
-    }, 500)
+        }, 500)
 }
 
 ELEMENTS_UI.SYSTEM_MESSAGE_CLOSE.addEventListener('click', () => ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none')
@@ -105,10 +109,10 @@ function convertTimestampToDate(unix_timestamp, timezone) {
   
 function showResult(data) {
 
-    ELEMENTS_UI.CITY_NAME.forEach((item) => {
-        item.textContent = data.name
-        item.classList.add('correct')
-    })
+    ELEMENTS_UI.CITY_NAME_NOW.textContent = data.name
+    ELEMENTS_UI.CITY_NAME_DETAILS.textContent = data.name
+    ELEMENTS_UI.CITY_NAME_NOW.classList.add('correct')
+    
     ELEMENTS_UI.WEATHER_CURRENT_TEMPER.forEach(item => item.textContent = convertKelvinToCelsius(data.main.temp))
     ELEMENTS_UI.WEATHER_FEELS_TEMPER.textContent = convertKelvinToCelsius(data.main.feels_like)
     ELEMENTS_UI.WEATHER_CLOUDY.textContent = data.weather[0].main
@@ -116,15 +120,88 @@ function showResult(data) {
 
     ELEMENTS_UI.WEATHER_SUNRISE.textContent = convertTimestampToDate(data.sys.sunrise, data.timezone)
     ELEMENTS_UI.WEATHER_SUNSET.textContent = convertTimestampToDate(data.sys.sunset, data.timezone)
+
+    if (LIST_OF_FAVORITE_CITIES.includes(ELEMENTS_UI.CITY_NAME_NOW.textContent)) {
+        ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
+    } else {
+        ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
+    }
+
+    
     console.log(data)
-    // console.log(data.sys.sunrise)
-    // console.log(data.sys.sunset)
-    // console.log(data.sys.sunset.getTimezoneOffset())
-    // console.log(new Date.toString(data.sys.sunrise))
-    // console.log(new Date(data.sys.sunset))
-    // console.log(data.weather[0].main)
 }
-   
+
+ELEMENTS_UI.FAVORITE_BUTTON.addEventListener('click', addOrRemoveCity)
+
+function addOrRemoveCity() {
+    const cityName = ELEMENTS_UI.CITY_NAME_NOW.textContent
+
+    if (LIST_OF_FAVORITE_CITIES.includes(cityName) === false) {
+        ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
+        LIST_OF_FAVORITE_CITIES.push(ELEMENTS_UI.CITY_NAME_NOW.textContent)
+        RenderForFavoriteList()
+    } else {
+        ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
+        LIST_OF_FAVORITE_CITIES = LIST_OF_FAVORITE_CITIES.filter(item => item !== ELEMENTS_UI.CITY_NAME_NOW.textContent)
+        RenderForFavoriteList()
+    }
+}
+
+function removeItemButton() {
+    const cityName = event.target.previousElementSibling.textContent
+ 
+    LIST_OF_FAVORITE_CITIES = LIST_OF_FAVORITE_CITIES.filter(item => item !== cityName)
+
+    if (cityName === ELEMENTS_UI.CITY_NAME_NOW.textContent) {
+        ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
+    }
+
+    RenderForFavoriteList()
+}
+
+
+function RenderForFavoriteList() {
+
+    console.log(LIST_OF_FAVORITE_CITIES)
+    ELEMENTS_UI.FAVORITE_LIST.textContent = ''
+    
+    LIST_OF_FAVORITE_CITIES.forEach((item) => {
+
+        let cityItem = document.createElement('div')
+        cityItem.className = 'list-item'
+        
+        let cityItemName = document.createElement('div')
+        cityItemName.className = 'list-item_name'
+        cityItemName.textContent = item
+        cityItemName.addEventListener('click', () => getResult(event.target.textContent))
+        
+        let cityItemBtn = document.createElement('div')
+        cityItemBtn.className = 'list-item_btn'
+        cityItemBtn.innerHTML = '&#9587'
+        cityItemBtn.addEventListener('click', removeItemButton)
+        
+        cityItem.prepend(cityItemBtn)
+        cityItem.prepend(cityItemName)
+
+        ELEMENTS_UI.FAVORITE_LIST.prepend(cityItem)
+    })
+    
+}
+
+// function showAgain() {
+//     // console.log(event)
+//     getResult(event.target.textContent)
+// }
+
+
+
+
+// console.log(data.sys.sunrise)
+// console.log(data.sys.sunset)
+// console.log(data.sys.sunset.getTimezoneOffset())
+// console.log(new Date.toString(data.sys.sunrise))
+// console.log(new Date(data.sys.sunset))
+// console.log(data.weather[0].main)
 
     // current-temp
 

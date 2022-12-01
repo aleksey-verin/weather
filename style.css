@@ -279,6 +279,11 @@ body {
   opacity: 0.8;
 }
 
+.favorite-button.checked {
+  fill: #000;
+  opacity: 0.8;
+}
+
 /*================ TAB - DETAILS ==============*/
 .details-city-name {
   height: 68px;
@@ -444,11 +449,34 @@ body {
 
 .favorite-list-block {
   padding-left: 18px;
+  padding-right: 18px;
   padding-top: 30px;
+  overflow: scroll;
+  height: 320px;
 }
 
 .list-item {
   margin-bottom: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.list-item:hover {
+  color: #4f1685;
+  cursor: pointer;
+}
+
+.list-item_btn {
+  line-height: 24px;
+  font-size: 16px;
+}
+
+.list-item_btn:hover {
+  color: red;
 }
 
 /*================ ERROR ==============*/

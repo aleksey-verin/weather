@@ -234,6 +234,11 @@ body {
   }
 }
 
+.favorite-button.checked{
+  fill: #000;
+  opacity: 0.8;
+}
+
 /*================ TAB - DETAILS ==============*/
 
 .tab-details {
@@ -359,14 +364,35 @@ body {
 }
 .favorite-list-block {
   padding-left: 18px;
+  padding-right: 18px;
   padding-top: 30px;
+  overflow: scroll;
+  height: 320px;
 }
 .list-citis {
 }
+
+
 .list-item {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  &:hover {
+    color: rgb(79, 22, 133);
+    cursor: pointer;
+  }
 }
 
+.list-item_name {
+}
+
+.list-item_btn {
+  line-height: 24px;
+  font-size: 16px;
+  &:hover {
+    color: red;
+  }
+}
 /*================ ERROR ==============*/
 
 .error-block {
