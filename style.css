@@ -136,6 +136,11 @@ body {
   padding-right: 16px;
 }
 
+.section-search:focus-within {
+  -webkit-box-shadow: inset 0px 0px 0px 1px #999;
+          box-shadow: inset 0px 0px 0px 1px #999;
+}
+
 .section-search input {
   font-size: 18px;
   -webkit-box-flex: 1;

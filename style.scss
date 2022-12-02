@@ -130,8 +130,11 @@ body {
   display: flex;
   padding-left: 16px;
   padding-right: 16px;
-  
+  &:focus-within {
+    box-shadow: inset 0px 0px 0px 1px #999;
+  }
 }
+
 .section-search input {
   font-size: 18px;
   flex: 1 0 auto;
@@ -177,8 +180,8 @@ body {
   border-right: 1px solid #000000;
   display: flex;
   flex-direction: column;
-
 }
+
 .block-tabs {
   flex: 1 1 auto;
   box-sizing: border-box;
@@ -198,6 +201,7 @@ body {
   justify-content: space-between;
   height: 100%;
 }
+
 .now-temperature {
   display: none;
   flex: 1 1 33.333%;
@@ -205,6 +209,7 @@ body {
   padding-left: 23px;
   padding-top: 23px;
 }
+
 .now-sky {
   margin: 0 auto 0 auto;
 }
@@ -224,9 +229,7 @@ body {
   padding-bottom: 17px;
   padding-right: 26px;
 }
-.city-name {
 
-}
 .favorite-button {
   opacity: 0.54;
   fill: none;
@@ -247,8 +250,6 @@ body {
 
 /*================ TAB - DETAILS ==============*/
 
-.tab-details {
-}
 .details-city-name {
   height: 68px;
   padding-left: 18px;
@@ -256,10 +257,12 @@ body {
   display: flex;
   align-items: flex-end;
 }
+
 .details-list {
   padding-left: 18px;
   padding-top: 30px;
 }
+
 .details-item {
   margin-bottom: 20px;
 }
@@ -268,6 +271,7 @@ body {
 
 .tab-forecast {
 }
+
 .forecast-city-name {
   height: 68px;
   padding-left: 18px;
@@ -275,6 +279,7 @@ body {
   display: flex;
   align-items: flex-end;
 }
+
 .forecast-list {
   padding-left: 18px;
   padding-right: 18px;
@@ -282,6 +287,7 @@ body {
   height: 274px;
   overflow: scroll;
 }
+
 .forecast-item {
   margin-bottom: 8px;
   height: 120px;
@@ -292,31 +298,41 @@ body {
   box-sizing: border-box;
   border: 1px solid #000000;
 }
+
 .date-time {
   display: flex;
   justify-content: space-between;
 }
+
 .date {
 }
+
 .time {
 }
+
 .weather {
   display: flex;
   justify-content: space-between;
 }
+
 .temper {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 .real-temp {
 }
+
 .feels-temp {
 }
+
 .sky {
 }
+
 .sky-text {
 }
+
 .sky-pic {
   width: 31px;
   height: 31px;
@@ -331,6 +347,7 @@ body {
   font-size: 18px;
   line-height: 45px;
 }
+
 .tab-links {
   flex: 0 0 33.333%;
   text-align: center;
@@ -348,6 +365,7 @@ body {
     transition: background-color 0.5s ease 0s;
   }
 }
+
 .tab-links.active {
   background-color: #000;
   transition: none;
@@ -361,6 +379,7 @@ body {
   cursor: default;
   position: relative;
 }
+
 .favorite-title-block {
   height: 68px;
   border-bottom: 1px solid #000000;
@@ -369,6 +388,7 @@ body {
   display: flex;
   align-items: flex-end;
 }
+
 .favorite-list-block {
   padding-left: 18px;
   padding-right: 18px;
@@ -376,9 +396,6 @@ body {
   overflow: scroll;
   height: 320px;
 }
-.list-citis {
-}
-
 
 .list-item {
   margin-bottom: 20px;
@@ -390,9 +407,6 @@ body {
   }
 }
 
-.list-item_name {
-}
-
 .list-item_btn {
   line-height: 24px;
   font-size: 16px;
@@ -400,6 +414,7 @@ body {
     color: red;
   }
 }
+
 /*================ ERROR ==============*/
 
 .error-block {
@@ -413,9 +428,11 @@ body {
   font-size: 18px;
   color: #ffffff;
 }
+
 .error-message {
   display: inline-block;
 }
+
 .error-close {
   font-size: 16px;
   display: inline-block;
@@ -427,24 +444,19 @@ body {
   position: absolute;
   bottom: 0;
   right: 0;
-
   display: flex;
   width: 80px;
   font-size: 12px;
-  // line-height: 20px;
   height: 20px;
-  // line-height: 20px;
   align-items: center;
   justify-content: center;
   background-color: #999;
-  // border: 1px solid #989898;
-  // border-radius: 6px;
   cursor: pointer;
   z-index: 5;
-}
-.button-clear:hover {
-  background-color: #dfdddd;
-}
-.button-clear:active {
-  background-color: #c4c3c3;
+  &:hover {
+    background-color: #dfdddd;
+  }
+  &:active {
+    background-color: #c4c3c3;
+  }
 }
