@@ -1,6 +1,6 @@
-import { ELEMENTS_UI } from "ui-elements.js"
-import { storage } from "storage.js"
-import { convertKelvinToCelsius, convertTimestampToDate } from "helpers.js"
+import { ELEMENTS_UI } from "/ui-elements.js"
+import { storage } from "/storage.js"
+import { convertKelvinToCelsius, convertTimestampToDate } from "/helpers.js"
 
 let LIST_OF_FAVORITE_CITIES = storage.getFavoriteCitiesFromStorage() // storage ==>> LIST
 
