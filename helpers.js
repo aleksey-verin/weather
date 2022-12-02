@@ -14,3 +14,21 @@ export function convertTimestampToDate(unix_timestamp, timezone) {
     let minutes = "0" + date.getMinutes()
     return hours + ':' + minutes.slice(-2)
 }
+
+export const translateWeather = {
+    Clouds: 'Облачно',
+    Clear : 'Ясно',
+    Snow : 'Снег',
+    Thunderstorm : 'Гроза',
+    Drizzle : 'Дождь',
+    Rain : 'Дождь',
+    Mist : 'Туман',
+    Smoke : 'Смог',
+    Haze : 'Туман',
+    Dust : 'Пыль',
+    Fog : 'Туман',
+    Sand : 'Песок',
+    Ash : 'Пепел',
+    Squall : 'Ураган',
+    Tornado : 'Торнадо',
+}

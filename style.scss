@@ -131,7 +131,9 @@ body {
   padding-left: 16px;
   padding-right: 16px;
   &:focus-within {
-    box-shadow: inset 0px 0px 0px 1px #999;
+    box-shadow: inset 0px 0px 0px 4px #999;
+    transition: all 0.5s ease 0s;
+
   }
 }
 
@@ -261,6 +263,8 @@ body {
 .details-list {
   padding-left: 18px;
   padding-top: 30px;
+  overflow: scroll;
+  height: 274px;
 }
 
 .details-item {
@@ -328,6 +332,9 @@ body {
 }
 
 .sky {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .sky-text {
@@ -337,6 +344,7 @@ body {
   width: 31px;
   height: 31px;
   background: url(images/icon-rain.svg) 0 0 /100% no-repeat;
+  
 }
 
 /*================ LINKS FOR TABS ==============*/
@@ -445,7 +453,7 @@ body {
   bottom: 0;
   right: 0;
   display: flex;
-  width: 80px;
+  width: 100px;
   font-size: 12px;
   height: 20px;
   align-items: center;

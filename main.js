@@ -1,20 +1,20 @@
 import { ELEMENTS_UI } from "./ui-elements.js"
 import { storage } from "./storage.js"
-import { convertKelvinToCelsius, convertTimestampToDate } from "./helpers.js"
+import { 
+    convertKelvinToCelsius, 
+    convertTimestampToDate,
+    translateWeather
+ } from "./helpers.js"
 
-let LIST_OF_FAVORITE_CITIES = storage.getFavoriteCitiesFromStorage() // storage ==>> LIST
-
-let currentCity = storage.getCurrentCityFromStorage() // storage ==>> currentCity
-if (!currentCity) {
-    currentCity = 'Atlanta'
-}
-
-getResult(currentCity)
+storage.getCurrentCityFromStorage()
+storage.getFavoriteCitiesFromStorage
+getResult(storage.currentCity)
 RenderForFavoriteList()
 
-ELEMENTS_UI.TAB_LINKS.forEach((item) => {
-    item.addEventListener('click', showTab)
-})
+ELEMENTS_UI.TAB_LINKS.forEach(item => item.addEventListener('click', showTab))
+ELEMENTS_UI.FAVORITE_BUTTON.addEventListener('click', addOrRemoveCityOnHeartButton)
+ELEMENTS_UI.BUTTON_CLEAR_ALL.addEventListener("click", clearAllFavoriteList)
+ELEMENTS_UI.FORM_SEARCH.addEventListener('submit', getCity)
 
 function showTab() {
     ELEMENTS_UI.TAB_LINKS.forEach((item) => item.classList.remove('active'))
@@ -28,7 +28,35 @@ function showTab() {
     })
 }
 
-ELEMENTS_UI.FORM_SEARCH.addEventListener('submit', getCity)
+function addOrRemoveCityOnHeartButton() {
+    const cityName = ELEMENTS_UI.CITY_NAME_NOW.textContent
+    
+    if (storage.listOfFavoriteCities.includes(cityName) === false) {
+        ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
+        storage.listOfFavoriteCities.push(cityName)
+        
+        storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
+        
+        RenderForFavoriteList()
+    } else {
+        ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
+        storage.listOfFavoriteCities = storage.listOfFavoriteCities.filter(item => item !== cityName)
+        
+        storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
+        
+        RenderForFavoriteList()
+    }
+}
+
+function clearAllFavoriteList() {
+    
+    localStorage.clear()
+    storage.listOfFavoriteCities = []
+    storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
+    getResult(storage.currentCity)
+    RenderForFavoriteList()
+    
+};
 
 function getCity() {
     if (ELEMENTS_UI.INPUT_SEARCH.value !== '') {
@@ -37,16 +65,32 @@ function getCity() {
         ELEMENTS_UI.INPUT_SEARCH.value = ''
     }
 }
+// const serverUrlForecast = 'https://api.openweathermap.org/data/2.5/forecast'
+// const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}&lang=ru`;
+// let response2 = fetch(urlForecast)
+// response2
+// .then(response2 => {
+//     if (response2.ok) {
+//         return response2.json()
+//     } else {
+//         return errorStatus = response2.status
+//     }  
+// })
+// .then((data) => {
+//     // showResult(data)
+//     console.log(data)
+//     // ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
+// })
 
 function getResult(nameFromInput) {
     
     const serverUrl = 'https://api.openweathermap.org/data/2.5/weather';
     const cityName = nameFromInput;
     const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f'
-    const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
+    const url = `${serverUrl}?q=${cityName}&appid=${apiKey}&lang=ru`;
     
     let errorStatus = new Number
-    
+
     let response = fetch(url)
     response
     .then(response => {
@@ -58,7 +102,7 @@ function getResult(nameFromInput) {
     })
     .then((data) => {
         showResult(data)
-        // console.log(data)
+        console.log(data)
         ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
     })
     .catch(function(err) {
@@ -90,59 +134,37 @@ function showResult(data) {
     ELEMENTS_UI.WEATHER_DIV_CURRENT_TEMPER.style.display = 'inline'
     ELEMENTS_UI.WEATHER_SPAN_CURRENT_TEMPER.forEach(item => item.textContent = convertKelvinToCelsius(data.main.temp))
     ELEMENTS_UI.WEATHER_FEELS_TEMPER.textContent = convertKelvinToCelsius(data.main.feels_like)
-    ELEMENTS_UI.WEATHER_CLOUDY.textContent = data.weather[0].main
+    ELEMENTS_UI.WEATHER_CLOUDY.textContent = data.weather[0].description
     ELEMENTS_UI.WEATHER_PICTURE.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`
     ELEMENTS_UI.WEATHER_PICTURE.style.display = 'block'
     
     ELEMENTS_UI.WEATHER_SUNRISE.textContent = convertTimestampToDate(data.sys.sunrise, data.timezone)
     ELEMENTS_UI.WEATHER_SUNSET.textContent = convertTimestampToDate(data.sys.sunset, data.timezone)
     
-    if (LIST_OF_FAVORITE_CITIES.includes(ELEMENTS_UI.CITY_NAME_NOW.textContent)) {
+    if (storage.listOfFavoriteCities.includes(ELEMENTS_UI.CITY_NAME_NOW.textContent)) {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
     } else {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
     }
     
-    currentCity = data.name
-    storage.saveCurrentCityInStorage(currentCity) // currentCity ==>> storage
+    storage.currentCity = data.name
+    storage.saveCurrentCityInStorage(storage.currentCity) // currentCity ==>> storage
     
-}
-
-ELEMENTS_UI.FAVORITE_BUTTON.addEventListener('click', addOrRemoveCityOnHeartButton)
-
-function addOrRemoveCityOnHeartButton() {
-    const cityName = ELEMENTS_UI.CITY_NAME_NOW.textContent
-    
-    if (LIST_OF_FAVORITE_CITIES.includes(cityName) === false) {
-        ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
-        LIST_OF_FAVORITE_CITIES.push(cityName)
-        
-        storage.saveFavoriteCitiesInStorage(LIST_OF_FAVORITE_CITIES) //  LIST ==>> storage
-        
-        RenderForFavoriteList()
-    } else {
-        ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
-        LIST_OF_FAVORITE_CITIES = LIST_OF_FAVORITE_CITIES.filter(item => item !== cityName)
-        
-        storage.saveFavoriteCitiesInStorage(LIST_OF_FAVORITE_CITIES) //  LIST ==>> storage
-        
-        RenderForFavoriteList()
-    }
 }
 
 function RenderForFavoriteList() {
     
-    LIST_OF_FAVORITE_CITIES = storage.getFavoriteCitiesFromStorage() // storage ==>>  LIST 
+    storage.getFavoriteCitiesFromStorage() // storage ==>>  LIST 
     
-    if (LIST_OF_FAVORITE_CITIES === null) {
-        LIST_OF_FAVORITE_CITIES = []
+    if (storage.listOfFavoriteCities === null) {
+        storage.listOfFavoriteCities = []
     }
     
     ELEMENTS_UI.FAVORITE_LIST.textContent = ''
     
-    if (LIST_OF_FAVORITE_CITIES) {
+    if (storage.listOfFavoriteCities) {
         
-        LIST_OF_FAVORITE_CITIES.forEach((item) => {
+        storage.listOfFavoriteCities.forEach((item) => {
             
             let cityItem = document.createElement('div')
             cityItem.className = 'list-item'
@@ -169,9 +191,9 @@ function deleteButtonOnEachItem() {
     
     const cityName = event.target.previousElementSibling.textContent
     
-    LIST_OF_FAVORITE_CITIES = LIST_OF_FAVORITE_CITIES.filter(item => item !== cityName)
+    storage.listOfFavoriteCities = storage.listOfFavoriteCities.filter(item => item !== cityName)
     
-    storage.saveFavoriteCitiesInStorage(LIST_OF_FAVORITE_CITIES) //  LIST ==>> storage
+    storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
     
     if (cityName === ELEMENTS_UI.CITY_NAME_NOW.textContent) {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
@@ -180,14 +202,3 @@ function deleteButtonOnEachItem() {
     RenderForFavoriteList()
 }
 
-ELEMENTS_UI.BUTTON_CLEAR_ALL.addEventListener("click", clearAllFavoriteList)
-
-function clearAllFavoriteList() {
-  
-    localStorage.clear()
-    LIST_OF_FAVORITE_CITIES = []
-    storage.saveFavoriteCitiesInStorage(LIST_OF_FAVORITE_CITIES) //  LIST ==>> storage
-    getResult(currentCity)
-    RenderForFavoriteList()
-
-};
