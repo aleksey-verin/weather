@@ -296,8 +296,7 @@ body {
 }
 
 .favorite-button:hover {
-  opacity: 0.54;
-  fill: #000;
+  opacity: 0.8;
 }
 
 .favorite-button:active {

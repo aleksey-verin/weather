@@ -1,10 +1,6 @@
 import { ELEMENTS_UI } from "./ui-elements.js"
 import { storage } from "./storage.js"
-import { 
-    convertKelvinToCelsius, 
-    convertTimestampToDate,
-    translateWeather
- } from "./helpers.js"
+import { convertKelvinToCelsius, convertTimestampToDate } from "./helpers.js"
 
 storage.getCurrentCityFromStorage()
 storage.getFavoriteCitiesFromStorage
@@ -65,22 +61,6 @@ function getCity() {
         ELEMENTS_UI.INPUT_SEARCH.value = ''
     }
 }
-// const serverUrlForecast = 'https://api.openweathermap.org/data/2.5/forecast'
-// const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}&lang=ru`;
-// let response2 = fetch(urlForecast)
-// response2
-// .then(response2 => {
-//     if (response2.ok) {
-//         return response2.json()
-//     } else {
-//         return errorStatus = response2.status
-//     }  
-// })
-// .then((data) => {
-//     // showResult(data)
-//     console.log(data)
-//     // ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
-// })
 
 function getResult(nameFromInput) {
     
@@ -101,8 +81,8 @@ function getResult(nameFromInput) {
         }  
     })
     .then((data) => {
-        showResult(data)
         console.log(data)
+        showResult(data)
         ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
     })
     .catch(function(err) {
@@ -126,20 +106,26 @@ function getResult(nameFromInput) {
 }
 
 
-function showResult(data) {
-    
-    ELEMENTS_UI.CITY_NAME_NOW.textContent = data.name
-    ELEMENTS_UI.CITY_NAME_DETAILS.textContent = data.name
+function showResult({ 
+    name : cityName, 
+    main : { feels_like, temp }, 
+    weather : [ { description, icon } ], 
+    sys : { sunrise, sunset }, 
+    timezone, 
+    }) {
+ 
+    ELEMENTS_UI.CITY_NAME_NOW.textContent = cityName
+    ELEMENTS_UI.CITY_NAME_DETAILS.textContent = cityName
     
     ELEMENTS_UI.WEATHER_DIV_CURRENT_TEMPER.style.display = 'inline'
-    ELEMENTS_UI.WEATHER_SPAN_CURRENT_TEMPER.forEach(item => item.textContent = convertKelvinToCelsius(data.main.temp))
-    ELEMENTS_UI.WEATHER_FEELS_TEMPER.textContent = convertKelvinToCelsius(data.main.feels_like)
-    ELEMENTS_UI.WEATHER_CLOUDY.textContent = data.weather[0].description
-    ELEMENTS_UI.WEATHER_PICTURE.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`
+    ELEMENTS_UI.WEATHER_SPAN_CURRENT_TEMPER.forEach(item => item.textContent = convertKelvinToCelsius(temp))
+    ELEMENTS_UI.WEATHER_FEELS_TEMPER.textContent = convertKelvinToCelsius(feels_like)
+    ELEMENTS_UI.WEATHER_CLOUDY.textContent = description
+    ELEMENTS_UI.WEATHER_PICTURE.src = `https://openweathermap.org/img/wn/${icon}@4x.png`
     ELEMENTS_UI.WEATHER_PICTURE.style.display = 'block'
     
-    ELEMENTS_UI.WEATHER_SUNRISE.textContent = convertTimestampToDate(data.sys.sunrise, data.timezone)
-    ELEMENTS_UI.WEATHER_SUNSET.textContent = convertTimestampToDate(data.sys.sunset, data.timezone)
+    ELEMENTS_UI.WEATHER_SUNRISE.textContent = convertTimestampToDate(sunrise, timezone)
+    ELEMENTS_UI.WEATHER_SUNSET.textContent = convertTimestampToDate(sunset, timezone)
     
     if (storage.listOfFavoriteCities.includes(ELEMENTS_UI.CITY_NAME_NOW.textContent)) {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
@@ -147,7 +133,7 @@ function showResult(data) {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
     }
     
-    storage.currentCity = data.name
+    storage.currentCity = cityName
     storage.saveCurrentCityInStorage(storage.currentCity) // currentCity ==>> storage
     
 }
@@ -202,3 +188,21 @@ function deleteButtonOnEachItem() {
     RenderForFavoriteList()
 }
 
+// translateWeather
+
+// const serverUrlForecast = 'https://api.openweathermap.org/data/2.5/forecast'
+// const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}&lang=ru`;
+// let response2 = fetch(urlForecast)
+// response2
+// .then(response2 => {
+//     if (response2.ok) {
+//         return response2.json()
+//     } else {
+//         return errorStatus = response2.status
+//     }  
+// })
+// .then((data) => {
+//     // showResult(data)
+//     console.log(data)
+//     // ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
+// })
