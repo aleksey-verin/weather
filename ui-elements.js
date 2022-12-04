@@ -23,4 +23,9 @@ export const ELEMENTS_UI = {
     FAVORITE_LIST: document.querySelector('.list-cities'),
 
     BUTTON_CLEAR_ALL: document.querySelector('.button-clear'),
+
+    FORECAST_LIST: document.querySelector(".forecast-list"),
+    FORECAST_ITEM: document.querySelector(".forecast-item"),
+  
+
 }

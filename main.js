@@ -1,6 +1,6 @@
 import { ELEMENTS_UI } from "./ui-elements.js"
 import { storage } from "./storage.js"
-import { convertKelvinToCelsius, convertTimestampToDate } from "./helpers.js"
+import { convertKelvinToCelsius, convertTimestampToTime, convertTimestampToDayAndMonth, translateWeather} from "./helpers.js"
 
 storage.getCurrentCityFromStorage() // storage ==>>  LIST 
 storage.getFavoriteCitiesFromStorage() // storage ==>>  currentCity 
@@ -63,47 +63,129 @@ function getCity() {
 
 function getResult(nameFromInput) {
     
-    const serverUrl = 'https://api.openweathermap.org/data/2.5/weather';
+    const serverUrlWeather = 'https://api.openweathermap.org/data/2.5/weather';
     const cityName = nameFromInput;
     const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f'
-    const url = `${serverUrl}?q=${cityName}&appid=${apiKey}&lang=ru`;
+    const urlWeather = `${serverUrlWeather}?q=${cityName}&appid=${apiKey}&lang=ru`;
     
     let errorStatus = new Number
 
-    let response = fetch(url)
-    response
-    .then(response => {
-        if (response.ok) {
-            return response.json()
+    let responseCurrentWeather = fetch(urlWeather)
+    responseCurrentWeather
+    .then(responseCurrentWeather => {
+        if (responseCurrentWeather.ok) {
+            return responseCurrentWeather.json()
         } else {
-            return errorStatus = response.status
+            return errorStatus = responseCurrentWeather.status
         }  
     })
     .then((data) => {
-        console.log(data)
         showResult(data)
         ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
     })
     .catch(function(err) {
-        
-        ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.add('active')
-        
-        if (errorStatus === 404) {
-            ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `City not found. Please enter another city name..`
-        } else {
-            ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Sorry, network failure. Please try again later..`
-        }
-        
-        ELEMENTS_UI.SYSTEM_MESSAGE_CLOSE.addEventListener('click', function() {
-            ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
-        })
-
-        setTimeout(() => {
-            ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
-        }, 7000)
+        showError(errorStatus)
     }) 
+
+    const serverUrlForecast = 'https://api.openweathermap.org/data/2.5/forecast'
+    const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}&lang=ru`;
+    let responseForecast = fetch(urlForecast)
+    responseForecast
+    .then(responseForecast => {
+        if (responseForecast.ok) {
+            return responseForecast.json()
+        } else {
+            return errorStatus = responseForecast.status
+        }  
+    })
+    .then((data) => {
+        showForecast(data)
+        ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
+    })
+    .catch(function(err) {
+        showError(errorStatus)
+    }) 
+
 }
 
+function showForecast({ list }) {
+    ELEMENTS_UI.FORECAST_LIST.textContent = ''
+    list.forEach((item) => {
+
+        let forecastItem = document.createElement('div')
+        forecastItem.className = 'forecast-item'
+        
+        let forecastDateDiv = document.createElement('div')
+        forecastDateDiv.className = 'date-time'
+
+        let forecastDate_date = document.createElement('div')
+        forecastDate_date.className = 'date'
+        forecastDate_date.textContent = convertTimestampToDayAndMonth(item.dt)
+
+        let forecastDate_time = document.createElement('div')
+        forecastDate_time.className = 'time'
+        forecastDate_time.textContent = convertTimestampToTime( item.dt, 0 )
+        
+        forecastDateDiv.append( forecastDate_date, forecastDate_time )
+
+        let forecastWeatherDiv = document.createElement('div')
+        forecastWeatherDiv.className = 'weather'
+
+
+        let forecastTemperDiv = document.createElement('div')
+        forecastTemperDiv.className = 'temper'
+        forecastWeatherDiv.append (forecastTemperDiv)
+
+        let forecastTemperReal = document.createElement('div')
+        forecastTemperReal.className = 'real-temp'
+        forecastTemperReal.innerHTML = `Температура: ${convertKelvinToCelsius(item.main.temp)}&#176`
+
+        let forecastTemperFeel = document.createElement('div')
+        forecastTemperFeel.className = 'feels-temp'
+        forecastTemperFeel.innerHTML = `Ощущается как: ${convertKelvinToCelsius(item.main.feels_like)}&#176`
+
+        forecastTemperDiv.append(forecastTemperReal, forecastTemperFeel)
+
+        let forecastSkyDiv = document.createElement('div')
+        forecastSkyDiv.className = 'sky'
+        forecastWeatherDiv.append (forecastSkyDiv)
+
+        let forecastSkyText = document.createElement('div')
+        forecastSkyText.className = 'sky-text'
+        forecastSkyText.textContent = translateWeather(item.weather[0].main)
+
+        let forecastSkyPicture = document.createElement('img')
+        forecastSkyPicture.className = 'sky-pic'
+        forecastSkyPicture.src = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`
+
+        forecastSkyDiv.append(forecastSkyText, forecastSkyPicture)
+
+        forecastItem.append(forecastDateDiv, forecastWeatherDiv)
+        
+        ELEMENTS_UI.FORECAST_LIST.append(forecastItem)
+
+    })
+
+}
+
+function showError(errorStatus) {
+
+    ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.add('active')
+        
+    if (errorStatus === 404) {
+        ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `City not found. Please enter another city name..`
+    } else {
+        ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Sorry, network failure. Please try again later..`
+    }
+    
+    ELEMENTS_UI.SYSTEM_MESSAGE_CLOSE.addEventListener('click', function() {
+        ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
+    })
+
+    setTimeout(() => {
+        ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
+    }, 7000)
+}
 
 function showResult({ 
     name : cityName, 
@@ -124,8 +206,8 @@ function showResult({
     ELEMENTS_UI.WEATHER_PICTURE.src = `https://openweathermap.org/img/wn/${icon}@4x.png`
     ELEMENTS_UI.WEATHER_PICTURE.style.display = 'block'
     
-    ELEMENTS_UI.WEATHER_SUNRISE.textContent = convertTimestampToDate(sunrise, timezone)
-    ELEMENTS_UI.WEATHER_SUNSET.textContent = convertTimestampToDate(sunset, timezone)
+    ELEMENTS_UI.WEATHER_SUNRISE.textContent = convertTimestampToTime(sunrise, timezone)
+    ELEMENTS_UI.WEATHER_SUNSET.textContent = convertTimestampToTime(sunset, timezone)
     
     if (storage.listOfFavoriteCities.includes(ELEMENTS_UI.CITY_NAME_NOW.textContent)) {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
@@ -192,13 +274,13 @@ function deleteButtonOnEachItem() {
 
 // const serverUrlForecast = 'https://api.openweathermap.org/data/2.5/forecast'
 // const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}&lang=ru`;
-// let response2 = fetch(urlForecast)
-// response2
-// .then(response2 => {
-//     if (response2.ok) {
-//         return response2.json()
+// let responseCurrentWeather2 = fetch(urlForecast)
+// responseCurrentWeather2
+// .then(responseCurrentWeather2 => {
+//     if (responseCurrentWeather2.ok) {
+//         return responseCurrentWeather2.json()
 //     } else {
-//         return errorStatus = response2.status
+//         return errorStatus = responseCurrentWeather2.status
 //     }  
 // })
 // .then((data) => {

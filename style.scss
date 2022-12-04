@@ -331,12 +331,15 @@ body {
 }
 
 .real-temp {
+  font-size: 16px;
 }
 
 .feels-temp {
+  font-size: 16px;
 }
 
 .sky {
+  font-size: 16px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -346,9 +349,9 @@ body {
 }
 
 .sky-pic {
-  width: 31px;
-  height: 31px;
-  background: url(images/icon-rain.svg) 0 0 /100% no-repeat;
+  width: 40px;
+  height: 40px;
+  // background: url(images/icon-rain.svg) 0 0 /100% no-repeat;
   
 }
 
