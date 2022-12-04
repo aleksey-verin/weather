@@ -537,6 +537,10 @@ body {
   color: #ffffff;
 }
 
+.error-block.active {
+  display: block;
+}
+
 .error-message {
   display: inline-block;
 }

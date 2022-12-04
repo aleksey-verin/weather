@@ -82,11 +82,11 @@ function getResult(nameFromInput) {
     .then((data) => {
         console.log(data)
         showResult(data)
-        ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
+        ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
     })
     .catch(function(err) {
         
-        ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'block'
+        ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.add('active')
         
         if (errorStatus === 404) {
             ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `City not found. Please enter another city name..`
@@ -95,11 +95,11 @@ function getResult(nameFromInput) {
         }
         
         ELEMENTS_UI.SYSTEM_MESSAGE_CLOSE.addEventListener('click', function() {
-            ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
+            ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
         })
 
         setTimeout(() => {
-            ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.style.display = 'none'
+            ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
         }, 7000)
     }) 
 }

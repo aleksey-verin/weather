@@ -198,7 +198,6 @@ body {
 
 .tab-content.active {
   display: block;
-  // height: 100%;
 }
 
 /*================ TAB - NOW ==============*/
@@ -441,6 +440,10 @@ body {
   padding: 5px;
   font-size: 18px;
   color: #ffffff;
+}
+
+.error-block.active {
+  display: block;
 }
 
 .error-message {
