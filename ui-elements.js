@@ -5,6 +5,7 @@ export const ELEMENTS_UI = {
     TAB_CONTENTS: document.querySelectorAll(".tab-content"),
     CITY_NAME_NOW: document.querySelector('.now-city-name'),
     CITY_NAME_DETAILS: document.querySelector('.details-city-name'),
+    CITY_NAME_FORECAST: document.querySelector('.forecast-city-name'),
     
     WEATHER_DIV_CURRENT_TEMPER: document.querySelector('.now-temperature'),
     WEATHER_SPAN_CURRENT_TEMPER: document.querySelectorAll('.current-temp'),

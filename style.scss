@@ -192,7 +192,13 @@ body {
 }
 
 .tab-content {
+  display: none;
   height: 100%;
+}
+
+.tab-content.active {
+  display: block;
+  // height: 100%;
 }
 
 /*================ TAB - NOW ==============*/

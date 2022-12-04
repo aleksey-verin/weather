@@ -2,10 +2,10 @@ import { ELEMENTS_UI } from "./ui-elements.js"
 import { storage } from "./storage.js"
 import { convertKelvinToCelsius, convertTimestampToDate } from "./helpers.js"
 
-storage.getCurrentCityFromStorage()
-storage.getFavoriteCitiesFromStorage
+storage.getCurrentCityFromStorage() // storage ==>>  LIST 
+storage.getFavoriteCitiesFromStorage() // storage ==>>  currentCity 
 getResult(storage.currentCity)
-RenderForFavoriteList()
+renderForFavoriteList()
 
 ELEMENTS_UI.TAB_LINKS.forEach(item => item.addEventListener('click', showTab))
 ELEMENTS_UI.FAVORITE_BUTTON.addEventListener('click', addOrRemoveCityOnHeartButton)
@@ -16,10 +16,9 @@ function showTab() {
     ELEMENTS_UI.TAB_LINKS.forEach((item) => item.classList.remove('active'))
     event.target.classList.add('active')
     ELEMENTS_UI.TAB_CONTENTS.forEach((item) => {
+        item.classList.remove('active')
         if (item.dataset.name === event.target.dataset.name) {
-            item.style.display = 'block'
-        } else {
-            item.style.display = 'none'
+            item.classList.add('active')
         }
     })
 }
@@ -33,14 +32,14 @@ function addOrRemoveCityOnHeartButton() {
         
         storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
         
-        RenderForFavoriteList()
+        renderForFavoriteList()
     } else {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
         storage.listOfFavoriteCities = storage.listOfFavoriteCities.filter(item => item !== cityName)
         
         storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
         
-        RenderForFavoriteList()
+        renderForFavoriteList()
     }
 }
 
@@ -50,7 +49,7 @@ function clearAllFavoriteList() {
     storage.listOfFavoriteCities = []
     storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
     getResult(storage.currentCity)
-    RenderForFavoriteList()
+    renderForFavoriteList()
     
 };
 
@@ -116,6 +115,7 @@ function showResult({
  
     ELEMENTS_UI.CITY_NAME_NOW.textContent = cityName
     ELEMENTS_UI.CITY_NAME_DETAILS.textContent = cityName
+    ELEMENTS_UI.CITY_NAME_FORECAST.textContent = cityName
     
     ELEMENTS_UI.WEATHER_DIV_CURRENT_TEMPER.style.display = 'inline'
     ELEMENTS_UI.WEATHER_SPAN_CURRENT_TEMPER.forEach(item => item.textContent = convertKelvinToCelsius(temp))
@@ -138,7 +138,7 @@ function showResult({
     
 }
 
-function RenderForFavoriteList() {
+function renderForFavoriteList() {
     
     storage.getFavoriteCitiesFromStorage() // storage ==>>  LIST 
     
@@ -185,7 +185,7 @@ function deleteButtonOnEachItem() {
         ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
     }
     
-    RenderForFavoriteList()
+    renderForFavoriteList()
 }
 
 // translateWeather
