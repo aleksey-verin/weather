@@ -328,6 +328,7 @@ body {
 
 .details-list {
   padding-left: 18px;
+  padding-right: 18px;
   padding-top: 30px;
   overflow: scroll;
   height: 274px;
