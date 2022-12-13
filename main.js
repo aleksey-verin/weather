@@ -22,10 +22,10 @@ ELEMENTS_UI.FORM_SEARCH.addEventListener('submit', getCity)
 
 function showTab() {
   ELEMENTS_UI.TAB_LINKS.forEach((item) => item.classList.remove('active'))
-  event.target.classList.add('active')
+  this.classList.add('active')
   ELEMENTS_UI.TAB_CONTENTS.forEach((item) => {
     item.classList.remove('active')
-    if (item.dataset.name === event.target.dataset.name) {
+    if (item.dataset.name === this.dataset.name) {
       item.classList.add('active')
     }
   })
@@ -39,6 +39,7 @@ function addOrRemoveCityOnHeartButton() {
   } else {
     storage.listOfFavoriteCities.add(cityName)
   }
+
   ELEMENTS_UI.FAVORITE_BUTTON.classList.toggle('checked')
   storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
   renderForFavoriteList()
@@ -258,7 +259,7 @@ function renderForFavoriteList() {
 }
 
 function deleteButtonOnEachItem() {
-  const cityName = event.target.previousElementSibling.textContent
+  const cityName = this.previousElementSibling.textContent
 
   storage.listOfFavoriteCities.delete(cityName)
 
