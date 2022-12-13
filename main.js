@@ -34,21 +34,14 @@ function showTab() {
 function addOrRemoveCityOnHeartButton() {
   const cityName = ELEMENTS_UI.CITY_NAME_NOW.textContent
 
-  if (storage.listOfFavoriteCities.has(cityName) === false) {
-    ELEMENTS_UI.FAVORITE_BUTTON.classList.add('checked')
-    storage.listOfFavoriteCities.add(cityName)
-
-    storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
-
-    renderForFavoriteList()
-  } else {
-    ELEMENTS_UI.FAVORITE_BUTTON.classList.remove('checked')
+  if (storage.listOfFavoriteCities.has(cityName)) {
     storage.listOfFavoriteCities.delete(cityName)
-
-    storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
-
-    renderForFavoriteList()
+  } else {
+    storage.listOfFavoriteCities.add(cityName)
   }
+  ELEMENTS_UI.FAVORITE_BUTTON.classList.toggle('checked')
+  storage.saveFavoriteCitiesInStorage(storage.listOfFavoriteCities) //  LIST ==>> storage
+  renderForFavoriteList()
 }
 
 function clearAllFavoriteList() {
