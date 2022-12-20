@@ -61,49 +61,39 @@ function getCity() {
   }
 }
 
-function getResult(nameFromInput) {
+async function getResult(cityName) {
   const serverUrlWeather = 'https://api.openweathermap.org/data/2.5/weather'
-  const cityName = nameFromInput
   const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f'
   const urlWeather = `${serverUrlWeather}?q=${cityName}&appid=${apiKey}&lang=ru`
-
-  let errorStatus = new Number()
-
-  let responseCurrentWeather = fetch(urlWeather)
-  responseCurrentWeather
-    .then((responseCurrentWeather) => {
-      if (responseCurrentWeather.ok) {
-        return responseCurrentWeather.json()
-      } else {
-        return (errorStatus = responseCurrentWeather.status)
-      }
-    })
-    .then((data) => {
-      showResult(data)
-      ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
-    })
-    .catch(function (err) {
-      showError(errorStatus)
-    })
-
   const serverUrlForecast = 'https://api.openweathermap.org/data/2.5/forecast'
   const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}&lang=ru`
-  let responseForecast = fetch(urlForecast)
-  responseForecast
-    .then((responseForecast) => {
-      if (responseForecast.ok) {
-        return responseForecast.json()
-      } else {
-        return (errorStatus = responseForecast.status)
-      }
-    })
-    .then((data) => {
-      showForecast(data)
+
+  try {
+    let responseCurrentWeather = await fetch(urlWeather)
+    let responseForecast = await fetch(urlForecast)
+    if (responseCurrentWeather.ok && responseForecast.ok) {
+      let dataWeather = await responseCurrentWeather.json()
+      let forecastData = await responseForecast.json()
+      showResult(dataWeather)
+      showForecast(forecastData)
+
       ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
-    })
-    .catch(function (err) {
-      showError(errorStatus)
-    })
+    }
+    if (
+      responseCurrentWeather.status === 404 ||
+      responseForecast.status === 404
+    ) {
+      showError('404')
+    }
+    if (
+      responseCurrentWeather.status === 400 ||
+      responseForecast.status === 400
+    ) {
+      showError()
+    }
+  } catch (error) {
+    showError()
+  }
 }
 
 function showForecast({ list }) {
@@ -168,11 +158,10 @@ function showForecast({ list }) {
 
 function showError(errorStatus) {
   ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.add('active')
-
-  if (errorStatus === 404) {
-    ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `City not found. Please enter another city name..`
+  if (errorStatus === '404') {
+    ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Город не найден. Введите другой город..`
   } else {
-    ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Sorry, network failure. Please try again later..`
+    ELEMENTS_UI.SYSTEM_MESSAGE_TEXT.textContent = `Извините, ошибка сети. Попробуйте еще раз..`
   }
 
   ELEMENTS_UI.SYSTEM_MESSAGE_CLOSE.addEventListener('click', function () {
