@@ -71,7 +71,7 @@ function showLoadingMessage() {
 }
 
 async function getResult(cityName) {
-  let timerId = setTimeout(() => showLoadingMessage(), 1000)
+  let timerIdForLoadingMessage = setTimeout(() => showLoadingMessage(), 1000)
 
   const serverUrlWeather = 'https://api.openweathermap.org/data/2.5/weather'
   const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f'
@@ -82,7 +82,7 @@ async function getResult(cityName) {
   try {
     let responseCurrentWeather = await fetch(urlWeather)
     let responseForecast = await fetch(urlForecast)
-    clearTimeout(timerId)
+    clearTimeout(timerIdForLoadingMessage)
     if (responseCurrentWeather.ok && responseForecast.ok) {
       let dataWeather = await responseCurrentWeather.json()
       let forecastData = await responseForecast.json()
