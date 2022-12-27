@@ -87,7 +87,7 @@ async function getResult(cityName) {
       let dataWeather = await responseCurrentWeather.json()
       let forecastData = await responseForecast.json()
       showResult(dataWeather)
-      showForecast(forecastData)
+      showForecast(forecastData, dataWeather.timezone)
 
       ELEMENTS_UI.SYSTEM_MESSAGE_BLOCK.classList.remove('active')
     }
@@ -108,7 +108,7 @@ async function getResult(cityName) {
   }
 }
 
-function showForecast({ list }) {
+function showForecast({ list }, timezone) {
   ELEMENTS_UI.FORECAST_LIST.textContent = ''
   list.forEach((item) => {
     let forecastItem = document.createElement('div')
@@ -119,11 +119,14 @@ function showForecast({ list }) {
 
     let forecastDate_date = document.createElement('div')
     forecastDate_date.className = 'date'
-    forecastDate_date.textContent = convertTimestampToDayAndMonth(item.dt)
+    forecastDate_date.textContent = convertTimestampToDayAndMonth(
+      item.dt,
+      timezone
+    )
 
     let forecastDate_time = document.createElement('div')
     forecastDate_time.className = 'time'
-    forecastDate_time.textContent = convertTimestampToTime(item.dt, 0)
+    forecastDate_time.textContent = convertTimestampToTime(item.dt, timezone)
 
     forecastDateDiv.append(forecastDate_date, forecastDate_time)
 
